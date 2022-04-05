@@ -1,0 +1,2010 @@
+{
+  "metadata":{
+    "configurationVersions":[3],
+    "clusterVersion":"1.208.2.20201204-043043"
+  },
+  "id":"f96c66a7-1bc5-4e2f-a4d1-f741ac810b85",
+  "dashboardMetadata":{
+    "name":"Hyper-V Monitoring",
+    "shared":false,
+    "owner": "Dynatrace"
+  },
+  "tiles":[
+    {
+      "name": "Host list",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 0,
+        "left": 0,
+        "width": 684,
+        "height": 38
+      },
+      "tileFilter": {},
+      "markdown": "[List of all monitored host instances\n](/ui/entity/list/wmi:com_dynatrace_extension_hyper-v_instance)"
+
+    },
+    {
+      "name": "Guest list",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 0,
+        "left": 684,
+        "width": 684,
+        "height": 38
+      },
+      "tileFilter": {},
+      "markdown": "[List of all monitored guest instances\n](/ui/entity/list/wmi:com_dynatrace_extension_hyper-v_guest)"
+    },
+    {
+        "name": "Hosts",
+        "tileType": "DATA_EXPLORER",
+        "configured": true,
+        "bounds": {
+            "top": 40,
+            "left": 0,
+            "width": 684,
+            "height": 260
+        },
+        "tileFilter": {},
+        "customName": "Instances",
+        "queries": [
+            {
+                "id": "A",
+                "spaceAggregation": "AVG",
+                "timeAggregation": "DEFAULT",
+                "metricSelector": "com.dynatrace.extension.hyper-v.host.memory.pressure.average:splitBy(\"dt.entity.wmi:com_dynatrace_extension_hyper-v_instance\"):avg:auto:sort(value(avg,descending)):limit(10)",
+                "enabled": true
+            }
+        ],
+        "visualConfig": {
+            "type": "TABLE",
+            "global": {
+                "theme": "DEFAULT",
+                "threshold": {
+                    "axisTarget": "LEFT",
+                    "columnId": "Percent of used processor time",
+                    "rules": [
+                        {
+                            "color": "#7dc540"
+                        },
+                        {
+                            "color": "#f5d30f"
+                        },
+                        {
+                            "color": "#dc172a"
+                        }
+                    ]
+                },
+                "seriesType": "LINE"
+            },
+            "rules": [],
+            "axes": {
+                "xAxis": {
+                    "visible": true
+                },
+                "yAxes": []
+            }
+        }
+    },
+    {
+        "name": "Guests",
+        "tileType": "DATA_EXPLORER",
+        "configured": true,
+        "bounds": {
+            "top": 40,
+            "left": 684,
+            "width": 684,
+            "height": 260
+        },
+        "tileFilter": {},
+        "customName": "Instances",
+        "queries": [
+            {
+                "id": "A",
+                "spaceAggregation": "AVG",
+                "timeAggregation": "DEFAULT",
+                "metricSelector": "com.dynatrace.extension.hyper-v.guest.memory.pressure.current:splitBy(\"dt.entity.wmi:com_dynatrace_extension_hyper-v_guest\"):avg:auto:sort(value(avg,descending)):limit(10)",
+                "enabled": true
+            }
+        ],
+        "visualConfig": {
+            "type": "TABLE",
+            "global": {
+                "theme": "DEFAULT",
+                "threshold": {
+                    "axisTarget": "LEFT",
+                    "columnId": "Percent of used processor time",
+                    "rules": [
+                        {
+                            "color": "#7dc540"
+                        },
+                        {
+                            "color": "#f5d30f"
+                        },
+                        {
+                            "color": "#dc172a"
+                        }
+                    ]
+                },
+                "seriesType": "LINE"
+            },
+            "rules": [],
+            "axes": {
+                "xAxis": {
+                    "visible": true
+                },
+                "yAxes": []
+            }
+        }
+    },
+    {
+        "name": "VMs' Health",
+        "tileType": "HEADER",
+        "configured": true,
+        "bounds": {
+            "top": 300,
+            "left": 0,
+            "width": 1368,
+            "height": 38
+        },
+        "tileFilter": {}
+    },
+    {
+      "name":"Healthy Guests",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 340,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.host.guests.healthy",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.host.guests.healthy:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#7dc540"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Critical Guests",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 340,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.host.guests.critical",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.host.guests.critical:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#7dc540"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+        "name": "RAM",
+        "tileType": "HEADER",
+        "configured": true,
+        "bounds": {
+            "top": 600,
+            "left": 0,
+            "width": 1368,
+            "height": 38
+        },
+        "tileFilter": {}
+    },
+    {
+      "name":"Memory available for balancing",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 640,
+          "left": 0,
+          "width": 1368,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.host.memory.available.megabytes",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.host.memory.available.megabytes:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Average Memory Pressure",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 900,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.host.memory.pressure.average",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.host.memory.pressure.average:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Current Memory Pressure",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 900,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.memory.pressure.current",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "guest.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.memory.pressure.current:splitBy(host,guest.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Memory Assigned",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 1160,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.memory.assigned.megabytes",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "guest.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.memory.assigned.megabytes:splitBy(host,guest.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Memory Visible",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 1160,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.memory.visible.megabytes",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "guest.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.memory.visible.megabytes:splitBy(host,guest.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Memory Added",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 1430,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.memory.added.megabytes",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "guest.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.memory.added.megabytes:splitBy(host,guest.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Memory Removed",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 1430,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.memory.removed.megabytes",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "guest.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.memory.removed.megabytes:splitBy(host,guest.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+        "name": "CPU",
+        "tileType": "HEADER",
+        "configured": true,
+        "bounds": {
+            "top": 1700,
+            "left": 0,
+            "width": 1368,
+            "height": 38
+        },
+        "tileFilter": {}
+    },
+    {
+      "name":"CPU Idle Time",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 1730,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.host.cpu.time.idle.percent",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.host.cpu.time.idle.percent:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"CPU Total Run Time",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 1730,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.host.cpu.time.run.total.percent",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.host.cpu.time.run.total.percent:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"CPU Hypervisor Time",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 2000,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.host.cpu.time.run.hypervisor.percent",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.host.cpu.time.run.hypervisor.percent:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"CPU Guest Time",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 2000,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.host.cpu.time.run.guest.percent",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.host.cpu.time.run.guest.percent:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+        "name": "VCPU",
+        "tileType": "HEADER",
+        "configured": true,
+        "bounds": {
+            "top": 2270,
+            "left": 0,
+            "width": 1368,
+            "height": 38
+        },
+        "tileFilter": {}
+    },
+    {
+      "name":"VCPU Idle Time",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 2300,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "func:com.dynatrace.extension.hyper-v.guest.vcpu.time.idle.percent",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "vcpu.name"
+                    ],
+              "metricSelector": "func:com.dynatrace.extension.hyper-v.guest.vcpu.time.idle.percent:splitBy(host,vcpu.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"VCPU Total Run Time",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 2300,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.vcpu.time.run.total.percent",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "vcpu.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.vcpu.time.run.total.percent:splitBy(host,vcpu.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"VCPU Hypervisor Time",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 2570,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.vcpu.time.run.hypervisor.percent",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "vcpu.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.vcpu.time.run.hypervisor.percent:splitBy(host,vcpu.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"VCPU Guest Time",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 2570,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.vcpu.time.run.guest.percent",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "vcpu.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.vcpu.time.run.guest.percent:splitBy(host,vcpu.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+        "name": "Storage",
+        "tileType": "HEADER",
+        "configured": true,
+        "bounds": {
+            "top": 2840,
+            "left": 0,
+            "width": 1368,
+            "height": 38
+        },
+        "tileFilter": {}
+    },
+    {
+      "name":"Storage Bytes Read",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 2870,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.storage.read.bytes.persec",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "storage.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.storage.read.bytes.persec:splitBy(host,storage.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Storage Bytes Write",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 2870,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.storage.write.bytes.persec",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "storage.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.storage.write.bytes.persec:splitBy(host,storage.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Storage Read Operations",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 3140,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.storage.read.operations.persec",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "storage.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.storage.read.operations.persec:splitBy(host,storage.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Storage Write Operations",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 3140,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.storage.read.operations.persec",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "storage.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.storage.read.operations.persec:splitBy(host,storage.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Storage Read Count",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 3410,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.storage.read.operations.total",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "storage.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.storage.read.operations.total:splitBy(host,storage.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Storage Write Count",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 3410,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.storage.write.operations.total",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "storage.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.storage.write.operations.total:splitBy(host,storage.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Storage Error Count",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 3680,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.storage.error.operations.total",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "storage.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.storage.error.operations.total:splitBy(host,storage.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Storage Flush Count",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 3680,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.storage.flush.operations.total",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "storage.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.storage.flush.operations.total:splitBy(host,storage.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+        "name": "VMBus",
+        "tileType": "HEADER",
+        "configured": true,
+        "bounds": {
+            "top": 3940,
+            "left": 0,
+            "width": 1368,
+            "height": 38
+        },
+        "tileFilter": {}
+    },
+    {
+      "name":"VMBus Interrupts Received",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 3980,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.host.vmbus.interrupts.received.persec",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.host.vmbus.interrupts.received.persec:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"VMBus Interrupts Sent",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 3980,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.host.vmbus.interrupts.sent.persec",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.host.vmbus.interrupts.sent.persec:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+        "name": "Network",
+        "tileType": "HEADER",
+        "configured": true,
+        "bounds": {
+            "top": 4240,
+            "left": 0,
+            "width": 1368,
+            "height": 38
+        },
+        "tileFilter": {}
+    },
+    {
+      "name":"Packets Sent",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 4280,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.sent.persec",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "vna.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.sent.persec:splitBy(host,vna.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Packets Received",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 4280,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.received.persec",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "vna.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.received.persec:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Total Packets",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 4550,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.total.persec",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "vna.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.total.persec:splitBy(host,vna.name):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Incoming Packets Dropped",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 4810,
+          "left": 0,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.dropped.incoming.persec",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "vna.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.dropped.incoming.persec:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    },
+    {
+      "name":"Outgoing Packets Dropped",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+          "top": 4810,
+          "left": 684,
+          "width": 684,
+          "height": 260
+      },
+      "tileFilter": {},
+      "customName": "Explorer results",
+      "queries": [
+          {
+              "id": "A",
+              "metric": "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.dropped.outgoing.persec",
+              "spaceAggregation": "AVG",
+              "timeAggregation": "DEFAULT",
+              "splitBy": [
+                        "dt.entity.wmi:com_dynatrace_extension_hyper-v_instance",
+                        "vna.name"
+                    ],
+              "metricSelector": "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.dropped.outgoing.persec:splitBy(host):avg:auto:sort(value(avg,descending)):limit(20)",
+              "enabled": true
+          }
+      ],
+      "visualConfig": {
+          "type": "GRAPH_CHART",
+          "global": {
+              "theme": "DEFAULT",
+              "threshold": {
+                  "axisTarget": "LEFT",
+                  "rules": [
+                      {
+                          "color": "#dc172a"
+                      }
+                  ]
+              },
+              "seriesType": "LINE"
+          },
+          "rules": [
+              {
+                  "matcher": "A:",
+                  "properties": {
+                      "seriesType": "LINE"
+                  }
+              }
+          ],
+          "axes": {
+              "xAxis": {
+                  "visible": true
+              },
+              "yAxes": []
+          }
+      }
+    }
+  ]
+}

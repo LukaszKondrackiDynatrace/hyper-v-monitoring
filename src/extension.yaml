@@ -1,0 +1,1045 @@
+name: com.dynatrace.extension.hyper-v
+version: 1.1.5
+minDynatraceVersion: "1.223"
+author:
+  name: Dynatrace
+
+processes:
+  - name: Hyper-V
+    detection:
+    - id: ext.vmworker
+      processGroupName: Virtual Machine Worker Process
+      rules:
+      - property: executable
+        condition: "$eq(vmwp.exe)"
+
+metrics:
+  - key: com.dynatrace.extension.hyper-v.host.guests.healthy
+    metadata:
+      displayName: Healthy Guests
+      description: Number of healthy guest VMs on the host
+      unit: Count
+  - key: com.dynatrace.extension.hyper-v.host.guests.critical
+    metadata:
+      displayName: Critical Guests
+      description: Number of unhealthy guest VMs on the host
+      unit: Count
+  - key: com.dynatrace.extension.hyper-v.host.memory.available.megabytes
+    metadata:
+      displayName: Available Memory
+      description: Amount of RAM the memory balancer can still distribute to VMs
+      unit: MegaByte
+  - key: com.dynatrace.extension.hyper-v.guest.memory.assigned.megabytes
+    metadata:
+      displayName: Guest Assigned Memory
+      description: Amount of RAM currently assigned to the VM
+      unit: MegaByte
+  - key: com.dynatrace.extension.hyper-v.guest.memory.visible.megabytes
+    metadata:
+      displayName: Guest Visible Memory
+      description: Total mount of RAM assigned to the VM since its startup
+      unit: MegaByte
+  - key: com.dynatrace.extension.hyper-v.guest.memory.added.megabytes
+    metadata:
+      displayName: Guest Added Memory
+      description: Total mount of RAM added to the VM after initial assignment
+      unit: MegaByte
+  - key: com.dynatrace.extension.hyper-v.guest.memory.removed.megabytes
+    metadata:
+      displayName: Guest Removed Memory
+      description: Total mount of RAM removed from the VM after initial assignment
+      unit: MegaByte
+  - key: com.dynatrace.extension.hyper-v.host.memory.pressure.average
+    metadata:
+      displayName: Average Memory Pressure
+      description: Average memory pressure of all VM's served by the memory balancer
+      unit: Percent
+  - key: com.dynatrace.extension.hyper-v.guest.memory.pressure.current
+    metadata:
+      displayName: Guest Memory Pressure
+      description: Current Memory pressure of this VM
+      unit: Percent
+  - key: com.dynatrace.extension.hyper-v.host.cpu.time.idle.percent
+    metadata:
+      displayName: CPU Idle Time
+      description: Percentage of CPU time spent idle
+      unit: Percent
+  - key: com.dynatrace.extension.hyper-v.host.cpu.time.run.total.percent
+    metadata:
+      displayName: CPU Total Run Time
+      description: Percentage of CPU time spent actively
+      unit: Percent
+  - key: com.dynatrace.extension.hyper-v.host.cpu.time.run.hypervisor.percent
+    metadata:
+      displayName: CPU Hypervisor Time
+      description: Percentage of CPU time spent on hypervisor operations
+      unit: Percent
+  - key: com.dynatrace.extension.hyper-v.host.cpu.time.run.guest.percent
+    metadata:
+      displayName: CPU Guest Time
+      description: Percentage of CPU time spent on guest-side operations
+      unit: Percent
+  - key: com.dynatrace.extension.hyper-v.guest.vcpu.time.run.total.percent
+    metadata:
+      displayName: VCPU Total Run Time
+      description: Percentage of VCPU time spent actively
+      unit: Percent
+  - key: com.dynatrace.extension.hyper-v.guest.vcpu.time.run.hypervisor.percent
+    metadata:
+      displayName: VCPU Hypervisor Time
+      description: Percentage of VCPU time spent on hypervisor operations
+      unit: Percent
+  - key: func:com.dynatrace.extension.hyper-v.guest.vcpu.time.idle.percent
+    query:
+      metricSelector: '(100) - (com.dynatrace.extension.hyper-v.guest.vcpu.time.run.total.percent)'
+    metadata:
+      displayName: VCPU Idle Time
+      description: Percentage of VCPU time spent idle
+      unit: Percent
+  - key: com.dynatrace.extension.hyper-v.guest.vcpu.time.run.guest.percent
+    metadata:
+      displayName: VCPU Guest Time
+      description: Percentage of VCPU time spent on guest-side operations
+      unit: Percent
+  - key: com.dynatrace.extension.hyper-v.guest.storage.read.bytes.persec
+    metadata:
+      displayName: Storage Bytes Read
+      description: Rate of bytes per second read from the virtual storage device of this VM
+      unit: BytePerSecond
+  - key: com.dynatrace.extension.hyper-v.guest.storage.write.bytes.persec
+    metadata:
+      displayName: Storage Bytes Write
+      description: Rate of bytes per second written to the virtual storage device of this VM
+      unit: BytePerSecond
+  - key: com.dynatrace.extension.hyper-v.guest.storage.read.operations.persec
+    metadata:
+      displayName: Storage Read Operations
+      description: Rate of read operations per second on the virtual storage device of this VM
+      unit: PerSecond
+  - key: com.dynatrace.extension.hyper-v.guest.storage.read.operations.persec
+    metadata:
+      displayName: Storage Write Operations
+      description: Rate of write operations per second on the virtual storage device of this VM
+      unit: PerSecond
+  - key: com.dynatrace.extension.hyper-v.guest.storage.read.operations.total
+    metadata:
+      displayName: Storage Read Count
+      description: Total number of read operations performed on the virtual storage device of this VM
+      unit: Count
+  - key: com.dynatrace.extension.hyper-v.guest.storage.write.operations.total
+    metadata:
+      displayName: Storage Write Count
+      description: Total number of write operations performed  on the virtual storage device of this VM
+      unit: Count
+  - key: com.dynatrace.extension.hyper-v.guest.storage.flush.operations.total
+    metadata:
+      displayName: Storage Flush Count
+      description: Total number of flush operations performed  on the virtual storage device of this VM
+      unit: Count
+  - key: com.dynatrace.extension.hyper-v.guest.storage.error.operations.total
+    metadata:
+      displayName: Storage Error Count
+      description: Total number of errors that occurred on the virtual storage device of this VM
+      unit: Count
+  - key: com.dynatrace.extension.hyper-v.host.vmbus.interrupts.received.persec
+    metadata:
+      displayName: VMBus Interrupts Received
+      description: Rate of Virtual Machine Bus interrupts received from any VM
+      unit: PerSecond
+  - key: com.dynatrace.extension.hyper-v.host.vmbus.interrupts.sent.persec
+    metadata:
+      displayName: VMBus Interrupts Sent
+      description: Rate of Virtual Machine Bus interrupts sent to any VM
+      unit: PerSecond
+  - key: com.dynatrace.extension.hyper-v.guest.network.adapter.packets.sent.persec
+    metadata:
+      displayName: Packets Sent
+      description: Rate of packets per second sent through the virtual network adapter of this VM
+      unit: PerSecond
+  - key: com.dynatrace.extension.hyper-v.guest.network.adapter.packets.received.persec
+    metadata:
+      displayName: Packets Received
+      description: Rate of packets per second received through the virtual network adapter of this VM
+      unit: PerSecond
+  - key: com.dynatrace.extension.hyper-v.guest.network.adapter.packets.total.persec
+    metadata:
+      displayName: Total Packets
+      description: Rate of total packets per second going through the virtual network adapter of this VM
+      unit: PerSecond
+  - key: com.dynatrace.extension.hyper-v.guest.network.adapter.packets.dropped.incoming.persec
+    metadata:
+      displayName: Incoming Packets Dropped
+      description: Rate of dropped packets per second received through the virtual network adapter of this VM
+      unit: PerSecond
+  - key: com.dynatrace.extension.hyper-v.guest.network.adapter.packets.dropped.outgoing.persec
+    metadata:
+      displayName: Outgoing Packets Dropped
+      description: Rate of dropped packets per second sent through the virtual network adapter of this VM
+      unit: PerSecond
+
+wmi:
+  - group: Host
+    interval: 1m
+    dimensions:
+      - key: host
+        value: this:device.host
+    subgroups:
+      - subgroup: Guests
+        query: SELECT HealthOk, HealthCritical FROM Win32_PerfFormattedData_VmmsVirtualMachineStats_HyperVVirtualMachineHealthSummary
+        metrics:
+          - key: com.dynatrace.extension.hyper-v.host.guests.healthy
+            value: column:HealthOk
+          - key: com.dynatrace.extension.hyper-v.host.guests.critical
+            value: column:HealthCritical
+      - subgroup: Memory
+        query: SELECT AvailableMemoryForBalancing, AveragePressure FROM Win32_PerfFormattedData_BalancerStats_HyperVDynamicMemoryBalancer
+        featureSet: memoryUsage
+        metrics:
+          - key: com.dynatrace.extension.hyper-v.host.memory.available.megabytes
+            value: column:AvailableMemoryForBalancing
+          - key: com.dynatrace.extension.hyper-v.host.memory.pressure.average
+            value: column:AveragePressure
+      - subgroup: CPU
+        query: SELECT PercentIdleTime, PercentTotalRunTime, PercentHypervisorRunTime, PercentGuestRunTime FROM Win32_PerfFormattedData_HvStats_HyperVHypervisorLogicalProcessor WHERE name LIKE '%Total%'
+        featureSet: CPUutilization
+        metrics:
+          - key: com.dynatrace.extension.hyper-v.host.cpu.time.idle.percent
+            value: column:PercentIdleTime
+          - key: com.dynatrace.extension.hyper-v.host.cpu.time.run.total.percent
+            value: column:PercentTotalRunTime
+          - key: com.dynatrace.extension.hyper-v.host.cpu.time.run.hypervisor.percent
+            value: column:PercentHypervisorRunTime
+          - key: com.dynatrace.extension.hyper-v.host.cpu.time.run.guest.percent
+            value: column:PercentGuestRunTime
+        dimensions:
+          - key: cpu.name
+            value: column:Name
+      - subgroup: VMBus
+        query: SELECT InterruptsReceivedPersec, InterruptsSentPersec FROM Win32_PerfFormattedData_Counters_HyperVVirtualMachineBus
+        featureSet: VMBus
+        metrics:
+          - key: com.dynatrace.extension.hyper-v.host.vmbus.interrupts.received.persec
+            value: column:InterruptsReceivedPersec
+          - key: com.dynatrace.extension.hyper-v.host.vmbus.interrupts.sent.persec
+            value: column:InterruptsSentPersec
+  - group: Guest
+    interval: 1m
+    dimensions:
+      - key: host
+        value: this:device.host
+    subgroups:
+      - subgroup: Memory
+        query: SELECT PhysicalMemory, GuestVisiblePhysicalMemory, AddedMemory, RemovedMemory, CurrentPressure FROM Win32_PerfFormattedData_BalancerStats_HyperVDynamicMemoryVM
+        featureSet: memoryUsage
+        metrics:
+          - key: com.dynatrace.extension.hyper-v.guest.memory.assigned.megabytes
+            value: column:PhysicalMemory
+          - key: com.dynatrace.extension.hyper-v.guest.memory.visible.megabytes
+            value: column:GuestVisiblePhysicalMemory
+          - key: com.dynatrace.extension.hyper-v.guest.memory.added.megabytes
+            value: column:AddedMemory
+          - key: com.dynatrace.extension.hyper-v.guest.memory.removed.megabytes
+            value: column:RemovedMemory
+          - key: com.dynatrace.extension.hyper-v.guest.memory.pressure.current
+            value: column:CurrentPressure
+        dimensions:
+          - key: guest.name
+            value: column:Name
+      - subgroup: VCPU
+        query: SELECT PercentTotalRunTime, PercentHypervisorRunTime, PercentGuestRunTime, Name FROM Win32_PerfFormattedData_HvStats_HyperVHypervisorVirtualProcessor
+        featureSet: CPUutilization
+        metrics:
+          - key: com.dynatrace.extension.hyper-v.guest.vcpu.time.run.total.percent
+            value: column:PercentTotalRunTime
+          - key: com.dynatrace.extension.hyper-v.guest.vcpu.time.run.hypervisor.percent
+            value: column:PercentHypervisorRunTime
+          - key: com.dynatrace.extension.hyper-v.guest.vcpu.time.run.guest.percent
+            value: column:PercentGuestRunTime
+        dimensions:
+          - key: vcpu.name
+            value: column:Name
+      - subgroup: Storage
+        query: SELECT ReadBytesPersec, WriteBytesPersec, ReadOperationsPerSec, WriteOperationsPerSec, ReadCount, WriteCount, FlushCount, ErrorCount FROM Win32_PerfFormattedData_Counters_HyperVVirtualStorageDevice WHERE name LIKE '%vhdx'
+        featureSet: Storage
+        metrics:
+          - key: com.dynatrace.extension.hyper-v.guest.storage.read.bytes.persec
+            value: column:ReadBytesPersec
+          - key: com.dynatrace.extension.hyper-v.guest.storage.write.bytes.persec
+            value: column:WriteBytesPersec
+          - key: com.dynatrace.extension.hyper-v.guest.storage.read.operations.persec
+            value: column:ReadOperationsPerSec
+          - key: com.dynatrace.extension.hyper-v.guest.storage.write.operations.persec
+            value: column:WriteOperationsPerSec
+          - key: com.dynatrace.extension.hyper-v.guest.storage.read.operations.total
+            value: column:ReadCount
+          - key: com.dynatrace.extension.hyper-v.guest.storage.write.operations.total
+            value: column:WriteCount
+          - key: com.dynatrace.extension.hyper-v.guest.storage.flush.operations.total
+            value: column:FlushCount
+          - key: com.dynatrace.extension.hyper-v.guest.storage.error.operations.total
+            value: column:ErrorCount
+        dimensions:
+          - key: storage.name
+            value: column:Name
+      - subgroup: Network
+        query: SELECT PacketsSentPersec, PacketsReceivedPersec, PacketsPersec, DroppedPacketsIncomingPersec, DroppedPacketsOutgoingPersec FROM Win32_PerfFormattedData_NvspNicStats_HyperVVirtualNetworkAdapter WHERE Name LIKE '%Network Adapter[_]%'
+        featureSet: Network
+        metrics:
+          - key: com.dynatrace.extension.hyper-v.guest.network.adapter.packets.sent.persec
+            value: column:PacketsSentPersec
+          - key: com.dynatrace.extension.hyper-v.guest.network.adapter.packets.received.persec
+            value: column:PacketsReceivedPersec
+          - key: com.dynatrace.extension.hyper-v.guest.network.adapter.packets.total.persec
+            value: column:PacketsPersec
+          - key: com.dynatrace.extension.hyper-v.guest.network.adapter.packets.dropped.incoming.persec
+            value: column:DroppedPacketsIncomingPersec
+          - key: com.dynatrace.extension.hyper-v.guest.network.adapter.packets.dropped.outgoing.persec
+            value: column:DroppedPacketsOutgoingPersec
+        dimensions:
+          - key: vna.name
+            value: column:Name
+
+dashboards:
+  - path: "dashboards/dashboard.json"
+
+topology:
+  types:
+    - name: wmi:com_dynatrace_extension_hyper-v_instance
+      displayName: Hyper-V Host
+      enabled: true
+      rules:
+        - idPattern: wmi_hyper-v_{dt.entity.host}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v)
+          attributes: []
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Host on {host.name}
+        - idPattern: wmi_hyper-v_{dt.entity.host}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v)
+          attributes: []
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Host on {dt.entity.host}
+    - name: wmi:com_dynatrace_extension_hyper-v_guest
+      displayName: Hyper-V Guest VM
+      enabled: true
+      rules:
+        - idPattern: wmi_hyper-v_{dt.entity.host}_{guest.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest)
+          attributes:
+            - pattern: '{guest.name}'
+              key: wmi_guest_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Guest VM {guest.name} on {host.name}
+        - idPattern: wmi_hyper-v_{dt.entity.host}_{guest.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest)
+          attributes:
+            - pattern: '{guest.name}'
+              key: wmi_guest_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Guest VM {guest.name} on {dt.entity.host}
+    - name: wmi:com_dynatrace_extension_hyper-v_virtual_cpu
+      displayName: Hyper-V Virtual CPU
+      enabled: true
+      rules:
+        - idPattern: wmi_hyper-v_{dt.entity.host}_{vcpu.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest.vcpu)
+          attributes:
+            - pattern: '{vcpu.name}'
+              key: wmi_vcpu_name
+              displayName: Name
+          requiredDimensions: [ ]
+          instanceNamePattern: Hyper-V Virtual CPU {vcpu.name} on {host.name}
+        - idPattern: wmi_hyper-v_{dt.entity.host}_{vcpu.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest.vcpu)
+          attributes:
+            - pattern: '{vcpu.name}'
+              key: wmi_vcpu_name
+              displayName: Name
+          requiredDimensions: [ ]
+          instanceNamePattern: Hyper-V Virtual CPU {vcpu.name} on {dt.entity.host}
+    - name: wmi:com_dynatrace_extension_hyper-v_cpu
+      displayName: Hyper-V Logical CPU
+      enabled: true
+      rules:
+        - idPattern: wmi_hyper-v_{dt.entity.host}_{cpu.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.host.cpu)
+          attributes:
+            - pattern: '{cpu.name}'
+              key: wmi_cpu_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Logical CPU {cpu.name} on {host.name}
+        - idPattern: wmi_hyper-v_{dt.entity.host}_{cpu.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.host.cpu)
+          attributes:
+            - pattern: '{cpu.name}'
+              key: wmi_cpu_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Logical CPU {cpu.name} on {dt.entity.host}
+    - name: wmi:com_dynatrace_extension_hyper-v_virtual_storage_device
+      displayName: Hyper-V Virtual Storage Device
+      enabled: true
+      rules:
+        - idPattern: wmi_hyper-v_{dt.entity.host}_{storage.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest.storage)
+          attributes:
+            - pattern: '{storage.name}'
+              key: wmi_vsd_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Virtual Storage Device {storage.name} on {host.name}
+        - idPattern: wmi_hyper-v_{dt.entity.host}_{storage.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest.storage)
+          attributes:
+            - pattern: '{storage.name}'
+              key: wmi_vsd_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Virtual Storage Device {storage.name} on {dt.entity.host}
+    - name: wmi:com_dynatrace_extension_hyper-v_virtual_network_adapter
+      displayName: Hyper-V Virtual Network Adapter
+      enabled: true
+      rules:
+        - idPattern: wmi_hyper-v_{dt.entity.host}_{vna.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest.network.adapter)
+          attributes:
+            - pattern: '{vna.name}'
+              key: wmi_vna_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Virtual Network Adapter {vna.name} on {host.name}
+        - idPattern: wmi_hyper-v_{dt.entity.host}_{vna.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest.network.adapter)
+          attributes:
+            - pattern: '{vna.name}'
+              key: wmi_vna_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Virtual Network Adapter {vna.name} on {dt.entity.host}
+  relationships:
+    - typeOfRelation: CHILD_OF
+      fromType: wmi:com_dynatrace_extension_hyper-v_guest
+      toType: wmi:com_dynatrace_extension_hyper-v_instance
+      enabled: true
+      sources:
+        - sourceType: Metrics
+          condition: $prefix(com.dynatrace.extension.hyper-v)
+    - typeOfRelation: CHILD_OF
+      fromType: wmi:com_dynatrace_extension_hyper-v_virtual_cpu
+      toType: wmi:com_dynatrace_extension_hyper-v_instance
+      enabled: true
+      sources:
+        - sourceType: Metrics
+          condition: $prefix(com.dynatrace.extension.hyper-v)
+    - typeOfRelation: CHILD_OF
+      fromType: wmi:com_dynatrace_extension_hyper-v_virtual_storage_device
+      toType: wmi:com_dynatrace_extension_hyper-v_instance
+      enabled: true
+      sources:
+        - sourceType: Metrics
+          condition: $prefix(com.dynatrace.extension.hyper-v)
+    - typeOfRelation: CHILD_OF
+      fromType: wmi:com_dynatrace_extension_hyper-v_virtual_network_adapter
+      toType: wmi:com_dynatrace_extension_hyper-v_instance
+      enabled: true
+      sources:
+        - sourceType: Metrics
+          condition: $prefix(com.dynatrace.extension.hyper-v)
+    - typeOfRelation: CHILD_OF
+      fromType: wmi:com_dynatrace_extension_hyper-v_cpu
+      toType: wmi:com_dynatrace_extension_hyper-v_instance
+      enabled: true
+      sources:
+        - sourceType: Metrics
+          condition: $prefix(com.dynatrace.extension.hyper-v)
+    - typeOfRelation: RUNS_ON
+      fromType: wmi:com_dynatrace_extension_hyper-v_virtual_cpu
+      toType: host
+      enabled: true
+      sources:
+        - sourceType: Metrics
+          condition: $prefix(com.dynatrace.extension.hyper-v)
+    - typeOfRelation: RUNS_ON
+      fromType: wmi:com_dynatrace_extension_hyper-v_virtual_storage_device
+      toType: host
+      enabled: true
+      sources:
+        - sourceType: Metrics
+          condition: $prefix(com.dynatrace.extension.hyper-v)
+    - typeOfRelation: RUNS_ON
+      fromType: wmi:com_dynatrace_extension_hyper-v_virtual_network_adapter
+      toType: host
+      enabled: true
+      sources:
+        - sourceType: Metrics
+          condition: $prefix(com.dynatrace.extension.hyper-v)
+
+screens:
+  - entityType: wmi:com_dynatrace_extension_hyper-v_virtual_network_adapter
+    propertiesCard:
+      properties:
+        - type: ATTRIBUTE
+          attribute:
+            key: wmi_vna_name
+            displayName: Name
+        - type: RELATION
+          relation:
+            entitySelectorTemplate: type(wmi:com_dynatrace_extension_hyper-v_instance), toRelationships.isChildOf($(entityConditions))
+            displayName: Hyper-V Host
+    detailsSettings:
+      staticContent:
+        showProblems: true
+        showProperties: true
+        showTags: true
+        showGlobalFilter: true
+        showAddTag: true
+      layout:
+        autoGenerate: false
+        cards:
+          - type: "CHART_GROUP"
+            key: "wmi_vna_traffic"
+          - type: "CHART_GROUP"
+            key: "wmi_vna_dropped"
+    chartsCards:
+      - key: "wmi_vna_traffic"
+        displayName: "Network traffic"
+        numberOfVisibleCharts: 3
+        charts:
+          - displayName: "Total Packets Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.total.persec:splitBy()"
+          - displayName: "Packets Sent Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.sent.persec:splitBy()"
+          - displayName: "Packets Received Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.received.persec:splitBy()"
+      - key: "wmi_vna_dropped"
+        displayName: "Packets dropped"
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Incoming Packets Dropped Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.dropped.incoming.persec:splitBy()"
+          - displayName: "Outgoing Packets Dropped Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.dropped.outgoing.persec:splitBy()"
+  - entityType: wmi:com_dynatrace_extension_hyper-v_virtual_storage_device
+    propertiesCard:
+      properties:
+        - type: ATTRIBUTE
+          attribute:
+            key: wmi_vsd_name
+            displayName: Name
+        - type: RELATION
+          relation:
+            entitySelectorTemplate: type(wmi:com_dynatrace_extension_hyper-v_instance), toRelationships.isChildOf($(entityConditions))
+            displayName: Hyper-V Host
+    detailsSettings:
+      staticContent:
+        showProblems: true
+        showProperties: true
+        showTags: true
+        showGlobalFilter: true
+        showAddTag: true
+      layout:
+        autoGenerate: false
+        cards:
+          - type: "CHART_GROUP"
+            key: "wmi_vsd_traffic"
+          - type: "CHART_GROUP"
+            key: "wmi_vsd_totals"
+    chartsCards:
+    - key: "wmi_vsd_traffic"
+      displayName: "Storage traffic"
+      numberOfVisibleCharts: 4
+      charts:
+        - displayName: "Read Bytes Per Second"
+          visualization:
+            themeColor: DEFAULT
+            seriesType: LINE
+          metrics:
+            - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.read.bytes.persec:splitBy()"
+        - displayName: "Write Bytes Per Second"
+          visualization:
+            themeColor: DEFAULT
+            seriesType: LINE
+          metrics:
+            - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.write.bytes.persec:splitBy()"
+        - displayName: "Read Operations Per Second"
+          visualization:
+            themeColor: DEFAULT
+            seriesType: LINE
+          metrics:
+            - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.read.operations.persec:splitBy()"
+        - displayName: "Write Operations Per Second"
+          visualization:
+            themeColor: DEFAULT
+            seriesType: LINE
+          metrics:
+            - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.write.operations.persec:splitBy()"
+    - key: "wmi_vsd_totals"
+      displayName: "Storage Operations Accumulated"
+      numberOfVisibleCharts: 2
+      charts:
+        - displayName: "Read Operations Accumulated"
+          visualization:
+            themeColor: DEFAULT
+            seriesType: AREA
+          metrics:
+            - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.read.operations.total:splitBy()"
+        - displayName: "Write Operations Accumulated"
+          visualization:
+            themeColor: DEFAULT
+            seriesType: AREA
+          metrics:
+            - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.write.operations.total:splitBy()"
+        - displayName: "Flush Operations Accumulated"
+          visualization:
+            themeColor: DEFAULT
+            seriesType: AREA
+          metrics:
+            - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.flush.operations.total:splitBy()"
+        - displayName: "Errors Accumulated"
+          visualization:
+            themeColor: DEFAULT
+            seriesType: AREA
+          metrics:
+            - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.error.operations.total:splitBy()"
+  - entityType: wmi:com_dynatrace_extension_hyper-v_virtual_cpu
+    propertiesCard:
+      properties:
+        - type: ATTRIBUTE
+          attribute:
+            key: wmi_vcpu_name
+            displayName: Name
+        - type: RELATION
+          relation:
+            entitySelectorTemplate: type(wmi:com_dynatrace_extension_hyper-v_instance), toRelationships.isChildOf($(entityConditions))
+            displayName: Hyper-V Host
+    detailsSettings:
+      staticContent:
+        showProblems: true
+        showProperties: true
+        showTags: true
+        showGlobalFilter: true
+        showAddTag: true
+      layout:
+        autoGenerate: false
+        cards:
+          - type: "CHART_GROUP"
+            key: "wmi_vcpu_times"
+    chartsCards:
+    - key: "wmi_vcpu_times"
+      displayName: "VCPU Runtime"
+      numberOfVisibleCharts: 4
+      charts:
+        - displayName: "Idle"
+          visualization:
+            themeColor: DEFAULT
+            seriesType: AREA
+          metrics:
+            - metricSelector: "func:com.dynatrace.extension.hyper-v.guest.vcpu.time.idle.percent:splitBy()"
+        - displayName: "Active"
+          visualization:
+            themeColor: DEFAULT
+            seriesType: AREA
+          metrics:
+            - metricSelector: "com.dynatrace.extension.hyper-v.guest.vcpu.time.run.total.percent:splitBy()"
+        - displayName: "Hypervisor"
+          visualization:
+            themeColor: DEFAULT
+            seriesType: AREA
+          metrics:
+            - metricSelector: "com.dynatrace.extension.hyper-v.guest.vcpu.time.run.hypervisor.percent:splitBy()"
+        - displayName: "Guest"
+          visualization:
+            themeColor: DEFAULT
+            seriesType: AREA
+          metrics:
+            - metricSelector: "com.dynatrace.extension.hyper-v.guest.vcpu.time.run.guest.percent:splitBy()"
+  - entityType: wmi:com_dynatrace_extension_hyper-v_guest
+    propertiesCard:
+      properties:
+        - type: ATTRIBUTE
+          attribute:
+            key: wmi_guest_name
+            displayName: Name
+        - type: RELATION
+          relation:
+            entitySelectorTemplate: type(wmi:com_dynatrace_extension_hyper-v_instance), toRelationships.isChildOf($(entityConditions))
+            displayName: Hyper-V Host
+    detailsSettings:
+      staticContent:
+        showProblems: true
+        showProperties: true
+        showTags: true
+        showGlobalFilter: true
+        showAddTag: true
+      layout:
+        autoGenerate: false
+        cards:
+          - type: "CHART_GROUP"
+            key: "wmi_current_memory_pressure"
+          - type: "CHART_GROUP"
+            key: "wmi_memory_allocated"
+          - type: "CHART_GROUP"
+            key: "wmi_memory_changed"
+    chartsCards:
+      - key: "wmi_current_memory_pressure"
+        displayName: "Guest's RAM"
+        numberOfVisibleCharts: 1
+        charts:
+          - displayName: "Memory Pressure"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.memory.pressure.current:splitBy(\"dt.entity.wmi:com_dynatrace_extension_hyper-v_guest\")"
+      - key: "wmi_memory_allocated"
+        displayName: "Memory Allocated"
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Current Memory Assigned"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.memory.assigned.megabytes:splitBy()"
+          - displayName: "Total Memory Visible"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.memory.visible.megabytes:splitBy()"
+      - key: "wmi_memory_changed"
+        displayName: "Memory Changed"
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Total Memory Removed"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.memory.removed.megabytes:splitBy()"
+          - displayName: "Total Memory Added"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.memory.added.megabytes:splitBy()"
+  - entityType: wmi:com_dynatrace_extension_hyper-v_instance
+    detailsSettings:
+      staticContent:
+        showProblems: true
+        showProperties: true
+        showTags: true
+        showGlobalFilter: true
+        showAddTag: true
+      layout:
+        autoGenerate: false
+        cards:
+          - type: "CHART_GROUP"
+            key: "wmi_guests_health"
+          - type: "CHART_GROUP"
+            key: "wmi_memory"
+          - type: "ENTITIES_LIST"
+            key: "wmi_guest_entities"
+          - type: "CHART_GROUP"
+            key: "wmi_cpu"
+          - type: "ENTITIES_LIST"
+            key: "wmi_vcpu_instances"
+          - type: "CHART_GROUP"
+            key: "wmi_vmbus"
+          - type: "ENTITIES_LIST"
+            key: "wmi_vsd_instances"
+          - type: "ENTITIES_LIST"
+            key: "wmi_vna_instances"
+    chartsCards:
+      - key: "wmi_guests_health"
+        displayName: "Guests' Health"
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Healthy Guests"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.guests.healthy:splitBy()"
+          - displayName: "Critical Guests"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.guests.critical:splitBy()"
+      - key: "wmi_memory"
+        displayName: "RAM"
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Available Memory"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.memory.available.megabytes:splitBy()"
+          - displayName: "Average Memory Pressure"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.memory.pressure.average:splitBy()"
+      - key: "wmi_cpu"
+        displayName: "CPU Runtimes"
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Idle"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.cpu.time.idle.percent:splitBy()"
+          - displayName: "Active"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.cpu.time.run.total.percent:splitBy()"
+          - displayName: "Hypervisor"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.cpu.time.run.hypervisor.percent:splitBy()"
+          - displayName: "Guest"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.cpu.time.run.guest.percent:splitBy()"
+      - key: "wmi_vmbus"
+        displayName: "VMBus"
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Interrupts Received"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.vmbus.interrupts.received.persec:splitBy()"
+          - displayName: "Interrupts Sent"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.vmbus.interrupts.sent.persec:splitBy()"
+    entitiesListCards:
+      - key: "wmi_guest_entities"
+        displayName: "Guest's Memory"
+        entitySelectorTemplate: "type(wmi:com_dynatrace_extension_hyper-v_guest), fromRelationships.isChildOf($(entityConditions))"
+        pageSize: 5
+        displayCharts: true
+        displayIcons: true
+        enableDetailsExpandability: true
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Memory Pressure"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.memory.pressure.current:splitBy(\"dt.entity.wmi:com_dynatrace_extension_hyper-v_guest\")"
+          - displayName: "Current Memory Assigned"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.memory.assigned.megabytes:splitBy()"
+          - displayName: "Total Memory Visible"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.memory.visible.megabytes:splitBy()"
+          - displayName: "Total Memory Removed"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.memory.removed.megabytes:splitBy()"
+          - displayName: "Total Memory Added"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.memory.added.megabytes:splitBy()"
+      - key: "wmi_vcpu_instances"
+        displayName: "VCPU Runtime"
+        entitySelectorTemplate: "type(wmi:com_dynatrace_extension_hyper-v_virtual_cpu), fromRelationships.isChildOf($(entityConditions))"
+        pageSize: 5
+        displayCharts: true
+        displayIcons: true
+        enableDetailsExpandability: true
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Idle"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "func:com.dynatrace.extension.hyper-v.guest.vcpu.time.idle.percent:splitBy()"
+          - displayName: "Active"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.vcpu.time.run.total.percent:splitBy()"
+          - displayName: "Hypervisor"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.vcpu.time.run.hypervisor.percent:splitBy()"
+          - displayName: "Guest"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+            - metricSelector: "com.dynatrace.extension.hyper-v.guest.vcpu.time.run.guest.percent:splitBy()"
+      - key: "wmi_vna_instances"
+        displayName: "VNA Traffic"
+        entitySelectorTemplate: "type(wmi:com_dynatrace_extension_hyper-v_virtual_network_adapter), fromRelationships.isChildOf($(entityConditions))"
+        pageSize: 5
+        displayCharts: true
+        displayIcons: true
+        enableDetailsExpandability: true
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Total Packets Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.total.persec:splitBy()"
+          - displayName: "Packets Sent Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.sent.persec:splitBy()"
+          - displayName: "Packets Received Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.received.persec:splitBy()"
+          - displayName: "Incoming Packets Dropped Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.dropped.incoming.persec:splitBy()"
+          - displayName: "Outgoing Packets Dropped Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.network.adapter.packets.dropped.outgoing.persec:splitBy()"
+      - key: "wmi_vsd_instances"
+        displayName: "VSD Traffic and Operations"
+        entitySelectorTemplate: "type(wmi:com_dynatrace_extension_hyper-v_virtual_storage_device), fromRelationships.isChildOf($(entityConditions))"
+        pageSize: 5
+        displayCharts: true
+        displayIcons: true
+        enableDetailsExpandability: true
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Read Bytes Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.read.bytes.persec:splitBy()"
+          - displayName: "Read Operations Accumulated"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.read.operations.total:splitBy()"
+          - displayName: "Write Bytes Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.write.bytes.persec:splitBy()"
+          - displayName: "Read Operations Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.read.operations.persec:splitBy()"
+          - displayName: "Write Operations Per Second"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.write.operations.persec:splitBy()"
+          - displayName: "Write Operations Accumulated"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.write.operations.total:splitBy()"
+          - displayName: "Flush Operations Accumulated"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.flush.operations.total:splitBy()"
+          - displayName: "Errors Accumulated"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: AREA
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.error.operations.total:splitBy()"
+
