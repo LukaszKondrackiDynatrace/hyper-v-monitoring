@@ -282,7 +282,7 @@ wmi:
           - key: storage.name
             value: column:Name
       - subgroup: Network
-        query: SELECT PacketsSentPersec, PacketsReceivedPersec, PacketsPersec, DroppedPacketsIncomingPersec, DroppedPacketsOutgoingPersec FROM Win32_PerfFormattedData_NvspNicStats_HyperVVirtualNetworkAdapter WHERE Name LIKE '%Network Adapter[_]%'
+        query: SELECT Name FROM Win32_PerfFormattedData_NvspNicStats_HyperVVirtualNetworkAdapter where Name Like '%--%'
         featureSet: Network
         metrics:
           - key: com.dynatrace.extension.hyper-v.guest.network.adapter.packets.sent.persec
