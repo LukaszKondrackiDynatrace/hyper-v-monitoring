@@ -1,6 +1,6 @@
 name: com.dynatrace.extension.hyper-v
-version: 1.1.5
-minDynatraceVersion: "1.223"
+version: 1.2.3
+minDynatraceVersion: "1.233"
 author:
   name: Dynatrace
 
@@ -116,7 +116,7 @@ metrics:
       displayName: Storage Read Operations
       description: Rate of read operations per second on the virtual storage device of this VM
       unit: PerSecond
-  - key: com.dynatrace.extension.hyper-v.guest.storage.read.operations.persec
+  - key: com.dynatrace.extension.hyper-v.guest.storage.write.operations.persec
     metadata:
       displayName: Storage Write Operations
       description: Rate of write operations per second on the virtual storage device of this VM
@@ -322,6 +322,20 @@ topology:
           attributes: []
           requiredDimensions: []
           instanceNamePattern: Hyper-V Host on {dt.entity.host}
+        - idPattern: wmi_hyper-v_{device.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v)
+          attributes: []
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Host on {device.name}
+        - idPattern: wmi_hyper-v_{device}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v)
+          attributes: []
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Host on {device}
     - name: wmi:com_dynatrace_extension_hyper-v_guest
       displayName: Hyper-V Guest VM
       enabled: true
@@ -346,6 +360,26 @@ topology:
               displayName: Name
           requiredDimensions: []
           instanceNamePattern: Hyper-V Guest VM {guest.name} on {dt.entity.host}
+        - idPattern: wmi_hyper-v_{device.name}_{guest.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest)
+          attributes:
+            - pattern: '{guest.name}'
+              key: wmi_guest_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Guest VM {guest.name} on {device.name}
+        - idPattern: wmi_hyper-v_{device}_{guest.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest)
+          attributes:
+            - pattern: '{guest.name}'
+              key: wmi_guest_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Guest VM {guest.name} on {device}
     - name: wmi:com_dynatrace_extension_hyper-v_virtual_cpu
       displayName: Hyper-V Virtual CPU
       enabled: true
@@ -370,6 +404,26 @@ topology:
               displayName: Name
           requiredDimensions: [ ]
           instanceNamePattern: Hyper-V Virtual CPU {vcpu.name} on {dt.entity.host}
+        - idPattern: wmi_hyper-v_{device.name}_{vcpu.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest.vcpu)
+          attributes:
+            - pattern: '{vcpu.name}'
+              key: wmi_vcpu_name
+              displayName: Name
+          requiredDimensions: [ ]
+          instanceNamePattern: Hyper-V Virtual CPU {vcpu.name} on {device.name}
+        - idPattern: wmi_hyper-v_{device}_{vcpu.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest.vcpu)
+          attributes:
+            - pattern: '{vcpu.name}'
+              key: wmi_vcpu_name
+              displayName: Name
+          requiredDimensions: [ ]
+          instanceNamePattern: Hyper-V Virtual CPU {vcpu.name} on {device}
     - name: wmi:com_dynatrace_extension_hyper-v_cpu
       displayName: Hyper-V Logical CPU
       enabled: true
@@ -394,6 +448,26 @@ topology:
               displayName: Name
           requiredDimensions: []
           instanceNamePattern: Hyper-V Logical CPU {cpu.name} on {dt.entity.host}
+        - idPattern: wmi_hyper-v_{device.name}_{cpu.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.host.cpu)
+          attributes:
+            - pattern: '{cpu.name}'
+              key: wmi_cpu_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Logical CPU {cpu.name} on {device.name}
+        - idPattern: wmi_hyper-v_{device}_{cpu.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.host.cpu)
+          attributes:
+            - pattern: '{cpu.name}'
+              key: wmi_cpu_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Logical CPU {cpu.name} on {device}
     - name: wmi:com_dynatrace_extension_hyper-v_virtual_storage_device
       displayName: Hyper-V Virtual Storage Device
       enabled: true
@@ -418,6 +492,26 @@ topology:
               displayName: Name
           requiredDimensions: []
           instanceNamePattern: Hyper-V Virtual Storage Device {storage.name} on {dt.entity.host}
+        - idPattern: wmi_hyper-v_{device.name}_{storage.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest.storage)
+          attributes:
+            - pattern: '{storage.name}'
+              key: wmi_vsd_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Virtual Storage Device {storage.name} on {device.name}
+        - idPattern: wmi_hyper-v_{device}_{storage.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest.storage)
+          attributes:
+            - pattern: '{storage.name}'
+              key: wmi_vsd_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Virtual Storage Device {storage.name} on {device}
     - name: wmi:com_dynatrace_extension_hyper-v_virtual_network_adapter
       displayName: Hyper-V Virtual Network Adapter
       enabled: true
@@ -442,6 +536,26 @@ topology:
               displayName: Name
           requiredDimensions: []
           instanceNamePattern: Hyper-V Virtual Network Adapter {vna.name} on {dt.entity.host}
+        - idPattern: wmi_hyper-v_{device.name}_{vna.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest.network.adapter)
+          attributes:
+            - pattern: '{vna.name}'
+              key: wmi_vna_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Virtual Network Adapter {vna.name} on {device.name}
+        - idPattern: wmi_hyper-v_{device}_{vna.name}
+          sources:
+            - sourceType: Metrics
+              condition: $prefix(com.dynatrace.extension.hyper-v.guest.network.adapter)
+          attributes:
+            - pattern: '{vna.name}'
+              key: wmi_vna_name
+              displayName: Name
+          requiredDimensions: []
+          instanceNamePattern: Hyper-V Virtual Network Adapter {vna.name} on {device}
   relationships:
     - typeOfRelation: CHILD_OF
       fromType: wmi:com_dynatrace_extension_hyper-v_guest
@@ -499,8 +613,40 @@ topology:
       sources:
         - sourceType: Metrics
           condition: $prefix(com.dynatrace.extension.hyper-v)
+    - typeOfRelation: RUNS_ON
+      fromType: wmi:com_dynatrace_extension_hyper-v_instance
+      toType: host
+      enabled: true
+      sources:
+        - sourceType: Metrics
+          condition: $prefix(com.dynatrace.extension.hyper-v)
 
 screens:
+  - entityType: HOST
+    detailsInjections:
+      - type: "CHART_GROUP"
+        key: "hyper-v-host-feature-chart"
+        conditions:
+          - relatedEntity|entitySelectorTemplate=type(wmi:com_dynatrace_extension_hyper-v_instance), fromRelationships.RunsOn($(entityConditions))
+    chartsCards:
+      - key: "hyper-v-host-feature-chart"
+        displayName: Hyper-V metrics
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Guests' Health"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.guests.healthy:splitBy()"
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.guests.critical:splitBy()"
+          - displayName: "Average Guests' Memory Pressure"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "com.dynatrace.extension.hyper-v.host.memory.pressure.average:splitBy()"
+
   - entityType: wmi:com_dynatrace_extension_hyper-v_virtual_network_adapter
     propertiesCard:
       properties:
@@ -780,6 +926,8 @@ screens:
       layout:
         autoGenerate: false
         cards:
+          - type: "ENTITIES_LIST"
+            key: "dt_host_instance"
           - type: "CHART_GROUP"
             key: "wmi_guests_health"
           - type: "CHART_GROUP"
@@ -874,6 +1022,31 @@ screens:
             metrics:
               - metricSelector: "com.dynatrace.extension.hyper-v.host.vmbus.interrupts.sent.persec:splitBy()"
     entitiesListCards:
+      - key: "dt_host_instance"
+        displayName: "Host metrics"
+        entitySelectorTemplate: "type(Host), toRelationships.runsOn($(entityConditions))"
+        pageSize: 5
+        displayCharts: true
+        displayIcons: true
+        enableDetailsExpandability: true
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "CPU usage"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "builtin:host.cpu.idle:splitBy()"
+              - metricSelector: "builtin:host.cpu.user:splitBy()"
+              - metricSelector: "builtin:host.cpu.system:splitBy()"
+          - displayName: "Memory usage"
+            visualization:
+              themeColor: DEFAULT
+              seriesType: LINE
+            metrics:
+              - metricSelector: "builtin:host.mem.total:splitBy()"
+              - metricSelector: "builtin:host.mem.used:splitBy()"
+              - metricSelector: "builtin:host.mem.recl:splitBy()"
       - key: "wmi_guest_entities"
         displayName: "Guest's Memory"
         entitySelectorTemplate: "type(wmi:com_dynatrace_extension_hyper-v_guest), fromRelationships.isChildOf($(entityConditions))"
@@ -1042,4 +1215,3 @@ screens:
               seriesType: AREA
             metrics:
               - metricSelector: "com.dynatrace.extension.hyper-v.guest.storage.error.operations.total:splitBy()"
-
